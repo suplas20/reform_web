@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { DownloadButton } from "./DownloadButton";
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -22,7 +23,9 @@ export function Footer() {
             <Link to="/about">서비스 소개</Link>
             <Link to="/features">주요 기능</Link>
             <Link to="/stories">리폼 이야기</Link>
-            <Link to="/download">앱 다운로드</Link>
+            <DownloadButton className="footer-download">
+              앱 다운로드
+            </DownloadButton>
           </div>
           <div className="footer-col">
             <strong>도움말 및 정책</strong>

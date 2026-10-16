@@ -156,7 +156,7 @@ describe("download and sharing", () => {
     await user.click(
       screen.getByRole("button", { name: /App Store 다운로드/ }),
     );
-    expect(screen.getByRole("status").textContent).toContain("앱 출시 후");
+    expect(screen.getByRole("status").textContent).toBe("출시 예정입니다");
   });
 
   it("copies the URL and reports success", async () => {

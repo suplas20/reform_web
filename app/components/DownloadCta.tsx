@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { DownloadButton } from "./DownloadButton";
 export function DownloadCta() {
   return (
     <div className="download-cta">
@@ -14,7 +14,7 @@ export function DownloadCta() {
           <br />
           앱에서 나에게 필요한 수리·리폼 정보를 찾아보세요.
         </p>
-        <Link to="/download" className="btn">
+        <DownloadButton className="btn">
           앱 다운로드 안내{" "}
           <svg
             width="17"
@@ -29,7 +29,7 @@ export function DownloadCta() {
           >
             <path d="M4 12h16m-6-6 6 6-6 6"></path>
           </svg>
-        </Link>
+        </DownloadButton>
       </div>
       <div
         className="download-cta-image"

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { DownloadButton } from "../components/DownloadButton";
 import { createPageMeta } from "../lib/seo";
 import { pages } from "../data/pages";
 import { DownloadCta } from "../components/DownloadCta";
@@ -19,7 +19,7 @@ export default function Page() {
               re:form의 다양한 기능으로 원하는 업체를 쉽게 찾고, 비교하고, 관심
               업체를 저장할 수 있습니다.
             </p>
-            <Link to="/download" className="btn">
+            <DownloadButton className="btn">
               앱 다운로드 안내{" "}
               <svg
                 width="16"
@@ -34,7 +34,7 @@ export default function Page() {
               >
                 <path d="M4 12h16m-6-6 6 6-6 6"></path>
               </svg>
-            </Link>
+            </DownloadButton>
           </div>
           <div
             className="page-hero-visual features-hero"

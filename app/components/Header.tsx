@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { ArrowIcon } from "./Icons";
+import { DownloadButton } from "./DownloadButton";
 
 const navigation = [
   { to: "/about", label: "서비스 소개" },
@@ -27,14 +28,14 @@ export function Header() {
   useEffect(() => {
     document.body.classList.toggle("nav-open", open);
     if (!open) return;
-    menu.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    menu.current?.querySelector<HTMLElement>("a, button")?.focus();
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
         toggle.current?.focus();
       }
       if (event.key === "Tab") {
-        const links = menu.current?.querySelectorAll<HTMLAnchorElement>("a");
+        const links = menu.current?.querySelectorAll<HTMLElement>("a, button");
         const last = links?.[links.length - 1];
         if (event.shiftKey && document.activeElement === toggle.current) {
           event.preventDefault();
@@ -73,9 +74,9 @@ export function Header() {
             ))}
           </nav>
           <div className="header-actions">
-            <Link to="/download" className="btn btn-sm">
+            <DownloadButton className="btn btn-sm">
               앱 다운로드 <ArrowIcon size={14} />
-            </Link>
+            </DownloadButton>
             <button
               ref={toggle}
               type="button"
@@ -120,9 +121,15 @@ export function Header() {
                 {label}
               </NavLink>
             ))}
-            <Link to="/download" className="btn" onClick={() => setOpen(false)}>
+            <DownloadButton
+              className="btn"
+              onClick={() => {
+                setOpen(false);
+                toggle.current?.focus();
+              }}
+            >
               앱 다운로드 <ArrowIcon />
-            </Link>
+            </DownloadButton>
           </nav>
         </div>
       </div>

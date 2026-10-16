@@ -99,6 +99,6 @@ VITE_SITE_URL=https://reform.example.com
 
 ## 시안에서 유지한 출시 준비 항목
 
-앱스토어 주소가 없어 다운로드 버튼은 출시 준비 안내를 표시하며, QR 코드도 안내 자리 표시자입니다. 실제 링크 확정 시 `app/components/StoreButtons.tsx`와 다운로드 페이지의 안내를 업데이트하세요. 정책 초안, 목업 이미지, 서비스 기능 설명과 예시 콘텐츠도 원본 내용을 유지했습니다.
+모든 페이지의 다운로드 버튼(헤더·푸터·모바일 메뉴·본문 CTA·스토어 버튼)은 `app/components/DownloadButton.tsx`를 통해 “출시 예정입니다” 메시지를 표시합니다. QR 코드는 안내 자리 표시자입니다. 실제 링크 확정 시 공통 다운로드 버튼과 `app/components/StoreButtons.tsx`, 다운로드 페이지의 안내를 업데이트하세요. 정책 초안, 목업 이미지, 서비스 기능 설명과 예시 콘텐츠도 원본 내용을 유지했습니다.
 
 공식 참고: [React Router 사전 렌더링](https://reactrouter.com/how-to/pre-rendering), [Cloudflare 정적 HTML 배포](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/), [Cloudflare 경로 및 404 동작](https://developers.cloudflare.com/pages/configuration/serving-pages/).

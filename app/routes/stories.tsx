@@ -3,6 +3,7 @@ import { stories, storyCategories } from "../data/stories";
 import { pages } from "../data/pages";
 import { createPageMeta } from "../lib/seo";
 import { ArrowIcon } from "../components/Icons";
+import { DownloadButton } from "../components/DownloadButton";
 
 export const meta = () => createPageMeta(pages.stories);
 
@@ -90,9 +91,9 @@ export default function StoriesPage() {
                 <br />더 좋은 일상
               </h2>
               <p className="lead">물건이 가진 가능성을 다시 발견해 보세요.</p>
-              <Link to="/download" className="btn">
+              <DownloadButton className="btn">
                 앱 만나보기 <ArrowIcon />
-              </Link>
+              </DownloadButton>
             </div>
           </div>
         </div>
