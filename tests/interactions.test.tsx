@@ -9,6 +9,8 @@ import { Header } from "../app/components/Header";
 import { StoreButtons } from "../app/components/StoreButtons";
 import { CopyLinkButton } from "../app/components/CopyLinkButton";
 import { ToastProvider } from "../app/components/Toast";
+import { renderToString } from "react-dom/server";
+import { hydrateRoot, type Root } from "react-dom/client";
 
 describe("FAQ", () => {
   it("combines category and answer search, expands answers, and recovers from no results", async () => {
@@ -37,6 +39,34 @@ describe("FAQ", () => {
 });
 
 describe("stories", () => {
+  it("hydrates a bookmarked filter without replacing the static document", async () => {
+    const tree = (
+      <MemoryRouter initialEntries={["/stories?category=bag"]}>
+        <StoriesPage />
+      </MemoryRouter>
+    );
+    const container = document.createElement("div");
+    container.innerHTML = renderToString(tree);
+    document.body.append(container);
+    expect(container.querySelectorAll(".story-card")).toHaveLength(6);
+    const recovered = vi.fn();
+    let root: Root | undefined;
+    try {
+      await act(async () => {
+        root = hydrateRoot(container, tree, { onRecoverableError: recovered });
+      });
+      expect(recovered).not.toHaveBeenCalled();
+      expect(container.querySelectorAll(".story-card")).toHaveLength(1);
+      expect(
+        within(container)
+          .getByRole("button", { name: "가방/가죽" })
+          .getAttribute("aria-pressed"),
+      ).toBe("true");
+    } finally {
+      await act(async () => root?.unmount());
+      container.remove();
+    }
+  });
   it("reads deep-linked filters, updates the URL, and restores filters on browser back", async () => {
     const user = userEvent.setup();
     const router = createMemoryRouter(

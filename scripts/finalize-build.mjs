@@ -1,27 +1,23 @@
-import { rename, rmdir, writeFile } from "node:fs/promises";
+import { rename, rmdir, rm, writeFile } from "node:fs/promises";
 import { loadEnv } from "vite";
-import { pages } from "../app/data/pages.ts";
+import { staticPaths, draftPaths } from "../app/lib/paths.ts";
 import { stories } from "../app/data/stories.ts";
+import { storyDetails } from "../app/data/story-details.ts";
+import { resolveIndexing, resolveSiteOrigin } from "../site.config.ts";
 
+const env = { ...loadEnv("production", process.cwd(), ""), ...process.env };
+const origin = resolveSiteOrigin(env.VITE_SITE_URL);
+const indexable = resolveIndexing(env);
 const output = new URL("../build/client/", import.meta.url);
-const siteUrl = loadEnv(
-  "production",
-  process.cwd(),
-  "VITE_",
-).VITE_SITE_URL?.replace(/\/$/, "");
-const paths = [
-  ...Object.values(pages).map((page) => page.path),
-  ...stories.map((story) => `/stories/${story.slug}`),
-];
-// Pages serves /about.html at /about, while /about/index.html redirects to /about/.
-// Keep clean URLs consistent with React Router links and canonical metadata.
-for (const path of paths.filter((path) => path !== "/")) {
+
+// Pages serves /about.html at /about; directory indexes would redirect to /about/.
+for (const path of staticPaths.filter((path) => path !== "/")) {
   await rename(
     new URL(`${path.slice(1)}/index.html`, output),
     new URL(`${path.slice(1)}.html`, output),
   );
 }
-for (const path of paths
+for (const path of staticPaths
   .filter((path) => path !== "/")
   .sort((a, b) => b.length - a.length)) {
   try {
@@ -30,33 +26,65 @@ for (const path of paths
     if (error.code !== "ENOTEMPTY") throw error;
   }
 }
+// Every supported URL has an HTML document. Do not publish an indexable empty shell.
+await rm(new URL("__spa-fallback.html", output), { force: true });
+await rm(new URL(".vite", output), { recursive: true, force: true });
+
 const redirects = ["/index.html / 301", "/index / 301"];
-for (const page of Object.values(pages)) {
-  if (page.path !== "/") redirects.push(`${page.path}.html ${page.path} 301`);
-}
-for (const story of stories) {
+for (const path of staticPaths)
+  if (path !== "/") redirects.push(`${path}.html ${path} 301`);
+for (const story of stories)
   redirects.push(
     `/story-${story.slug}.html /stories/${story.slug} 301`,
     `/story-${story.slug} /stories/${story.slug} 301`,
   );
-}
 await writeFile(new URL("_redirects", output), redirects.join("\n") + "\n");
-await writeFile(
-  new URL("robots.txt", output),
-  `User-agent: *\nAllow: /\n${siteUrl ? `\nSitemap: ${siteUrl}/sitemap.xml\n` : ""}`,
-);
-if (siteUrl) {
-  const escapeXml = (text) =>
-    text
-      .replaceAll("&", "&amp;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;");
+
+const searchAgents = [
+  "Googlebot",
+  "Bingbot",
+  "OAI-SearchBot",
+  "PerplexityBot",
+  "Claude-SearchBot",
+  "ChatGPT-User",
+  "Perplexity-User",
+  "Claude-User",
+];
+const trainingAgents = ["GPTBot", "ClaudeBot", "CCBot", "Google-Extended"];
+const robots = [
+  "# Search and user-requested retrieval are allowed; model training is separate.",
+  "# Cloudflare managed robots and edge bot policies must be aligned separately.",
+  "User-agent: *\nAllow: /",
+  ...searchAgents.map((agent) => `User-agent: ${agent}\nAllow: /`),
+  ...trainingAgents.map((agent) => `User-agent: ${agent}\nDisallow: /`),
+  ...(indexable
+    ? [`Sitemap: ${origin}/sitemap.xml`]
+    : ["# Preview deployment: pages carry noindex,follow."]),
+];
+await writeFile(new URL("robots.txt", output), robots.join("\n\n") + "\n");
+const escapeXml = (text) =>
+  text
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+const urls = indexable
+  ? staticPaths.filter((path) => !draftPaths.has(path))
+  : [];
+if (indexable)
   await writeFile(
     new URL("sitemap.xml", output),
-    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((path) => `  <url><loc>${escapeXml(siteUrl + path)}</loc></url>`).join("\n")}\n</urlset>\n`,
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+      .map((path) => {
+        const story = stories.find(
+          (story) => path === `/stories/${story.slug}`,
+        );
+        const modified = story ? storyDetails[story.slug].updatedAt : null;
+        return `  <url><loc>${escapeXml(origin + path)}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ""}</url>`;
+      })
+      .join("\n")}\n</urlset>\n`,
   );
-}
+else await rm(new URL("sitemap.xml", output), { force: true });
 console.log(
-  `Cloudflare Pages output: build/client (${paths.length} pre-rendered pages).${siteUrl ? " Sitemap generated." : " Set VITE_SITE_URL to generate canonical URLs and sitemap.xml."}`,
+  `Cloudflare Pages: ${staticPaths.length} pre-rendered pages; ${urls.length} sitemap URLs; indexing ${indexable ? "enabled" : "disabled"}; canonical origin ${origin}.`,
 );

@@ -8,13 +8,14 @@
   },
   "scripts": {
     "dev": "react-router dev --host 127.0.0.1",
-    "build": "react-router build && node scripts/finalize-build.mjs",
+    "build": "react-router build && node scripts/finalize-build.mjs && npm run check:ssg",
     "preview": "wrangler pages dev build/client --ip 127.0.0.1",
     "typecheck": "react-router typegen && tsc --noEmit",
     "test": "vitest run",
     "check:ssg": "node --test tests/ssg.test.mjs",
-    "check": "npm run typecheck && npm test && npm run build && npm run check:ssg",
-    "deploy": "npm run build && wrangler pages deploy build/client"
+    "check": "npm run typecheck && npm test && npm run build",
+    "audit:live": "node scripts/audit-live.mjs",
+    "deploy": "npm run check && wrangler pages deploy build/client"
   },
   "dependencies": {
     "isbot": "5.2.2",

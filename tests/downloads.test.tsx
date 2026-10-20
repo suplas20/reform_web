@@ -12,8 +12,10 @@ import FaqPage from "../app/routes/faq";
 import DownloadPage from "../app/routes/download";
 import TermsPage from "../app/routes/terms";
 import PrivacyPage from "../app/routes/privacy";
-import { pages } from "../app/data/pages";
-import { stories } from "../app/data/stories";
+import { staticPaths } from "../app/lib/paths";
+import GuidesPage from "../app/routes/guides";
+import GuidePage from "../app/routes/guide";
+import EditorialPage from "../app/routes/editorial";
 
 function renderPage(path: string) {
   const router = createMemoryRouter(
@@ -26,6 +28,9 @@ function renderPage(path: string) {
           { path: "/features", element: <FeaturesPage /> },
           { path: "/stories", element: <StoriesPage /> },
           { path: "/stories/:slug", element: <StoryPage /> },
+          { path: "/guides", element: <GuidesPage /> },
+          { path: "/guides/:category", element: <GuidePage /> },
+          { path: "/editorial-policy", element: <EditorialPage /> },
           { path: "/faq", element: <FaqPage /> },
           { path: "/download", element: <DownloadPage /> },
           { path: "/terms", element: <TermsPage /> },
@@ -39,22 +44,22 @@ function renderPage(path: string) {
   return router;
 }
 
-it.each([
-  ...Object.values(pages).map((page) => page.path),
-  ...stories.map((story) => `/stories/${story.slug}`),
-])("announces the release for every download action on %s", async (path) => {
-  const user = userEvent.setup();
-  const router = renderPage(path);
-  const buttons = screen.getAllByRole("button", {
-    name: /앱 다운로드|앱 만나보기|App Store 다운로드|Google Play 다운로드/,
-  });
-  expect(buttons.length).toBeGreaterThanOrEqual(2);
-  for (const button of buttons) {
-    await user.click(button);
-    expect(screen.getByRole("status").textContent).toBe("출시 예정입니다");
-    expect(router.state.location.pathname).toBe(path);
-  }
-});
+it.each(staticPaths)(
+  "announces the release for every download action on %s",
+  async (path) => {
+    const user = userEvent.setup();
+    const router = renderPage(path);
+    const buttons = screen.getAllByRole("button", {
+      name: /앱 다운로드|앱 만나보기|App Store 다운로드|Google Play 다운로드/,
+    });
+    expect(buttons.length).toBeGreaterThanOrEqual(2);
+    for (const button of buttons) {
+      await user.click(button);
+      expect(screen.getByRole("status").textContent).toBe("출시 예정입니다");
+      expect(router.state.location.pathname).toBe(path);
+    }
+  },
+);
 
 it("announces the release and closes the mobile menu", async () => {
   const user = userEvent.setup();

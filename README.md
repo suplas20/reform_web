@@ -1,104 +1,105 @@
-# re:form 웹사이트
+# re:form 마케팅 웹사이트
 
-기존 HTML 시안 14개 페이지를 React + TypeScript로 옮긴 앱 소개 사이트입니다. 실행과 배포는 저장소 루트에서 합니다.
+운영 주소는 **https://www.dashiform.com**입니다. React + Vite + React Router SSG로 앱 소개와 수리·리폼 가이드를 제공하고 Cloudflare Pages에서 정적 파일로 서비스합니다.
 
-- React + Vite + React Router Framework Mode
-- React Router 공식 `prerender`로 전체 페이지를 빌드 시 HTML로 생성
-- `ssr: false`로 운영 서버 없이 Cloudflare Pages에서 정적 파일 제공
-- FAQ 검색/분류/펼치기, URL과 연동되는 이야기 필터, 모바일 메뉴, 다운로드 안내, 링크 복사
+## 실행과 검증
 
-## 로컬 실행
-
-Node.js 24를 사용하세요. 의존성은 `package-lock.json`으로 고정합니다.
+Node.js 24를 사용하고 저장소 루트에서 실행하세요.
 
 ```bash
 npm ci
 npm run dev
+npm run check
+npm run preview
 ```
 
-개발 주소는 터미널에 표시됩니다(기본 `http://127.0.0.1:5173`).
+- `dev`: 개발 서버(기본 `http://127.0.0.1:5173`)
+- `check`: 타입 검사, 사용자 동작 테스트, SSG 빌드 및 SEO 산출물 검사
+- `build`: 22개 경로의 HTML 생성 및 필수 SEO 검사. 검사 실패 시 배포용 빌드 실패
+- `preview`: 빌드 결과를 Cloudflare Pages 로컬 환경에서 확인
+- `audit:live`: 재배포된 운영 사이트의 HTTP·HTML·sitemap·robots·도메인 통합 검사
 
 ```bash
-npm run check    # 타입 검사 → UI 동작 테스트 → SSG 빌드 → 정적 산출물 검사
-npm run preview  # 빌드 결과를 Cloudflare Pages 환경으로 로컬 확인
+npm run audit:live
+# 로컬 Cloudflare 미리보기 검사
+npm run audit:live -- http://127.0.0.1:8788
 ```
 
-`preview` 전에 `npm run build` 또는 `npm run check`를 실행하세요. Wrangler 최초 실행에는 패키지 설치와 실행 환경 초기화가 필요할 수 있습니다.
+운영 검사 명령은 공개 URL만 읽습니다. 실제 Google 색인 여부, AI 답변 인용, 검증된 크롤러 IP의 접근 성공을 판정하는 도구는 아닙니다.
+
+## SEO·GEO 구조
+
+| 구성          | 구현                                                                                                |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| 대표 주소     | `site.config.ts`의 `https://www.dashiform.com` 사용. 환경 변수 누락 시에도 유지                     |
+| 페이지 생성   | 22개 경로 모두 SSG. JS 없이 제목·설명·본문·내부 링크·구조화 데이터 확인 가능                        |
+| URL 정규화    | 페이지별 canonical, 쿼리·필터·추적 값 제외, 확장자 없는 주소, 기존 HTML 주소 301                    |
+| sitemap       | 검색 허용 페이지 20개. 정책 초안과 404·미리보기 제외                                                |
+| 구조화 데이터 | Organization, WebSite, WebPage/AboutPage/CollectionPage, BreadcrumbList, Article, ItemList, FAQPage |
+| 주제별 진입   | `/guides`와 가구·가방·신발·의류·가전·생활용품 독립 가이드 6개                                       |
+| 콘텐츠 이해   | 핵심 질문과 답변, 상담 체크리스트, 글 목차, 관련 글·분야 가이드 연결                                |
+| 편집 정보     | 편집 주체와 원칙 공개. 실제 내용 수정일 사용. 확인되지 않은 개인 작성자·검수·발행일·평점 미생성     |
+| 공유 메타     | 절대 OG/Twitter URL, 이미지 크기와 설명                                                             |
+| 이미지        | 실제 파일 크기에 맞는 width/height, 비핵심 이미지 lazy, 홈 주요 이미지 preload                      |
+| 배포 구분     | Cloudflare `main` 외 브랜치 자동 `noindex,follow`. 공식 주소로 canonical 유지                       |
+| 빌드 검사     | canonical·robots·JSON-LD 연결·본문 일치·sitemap·이미지·링크 및 홈에서 전체 페이지 발견 가능 여부    |
+
+검색 순위나 AI 인용을 구조화 데이터만으로 보장하지 않습니다. 일반 마케팅 사이트의 FAQPage 마크업은 Google FAQ 리치 결과 노출 보장을 의미하지 않습니다. GEO용 특수 파일보다 크롤링 가능한 본문, 명확한 답변, 출처와 실제 콘텐츠 품질에 우선순위를 둡니다.
 
 ## 페이지와 소스
 
-| 주소                 | 내용                                         |
-| -------------------- | -------------------------------------------- |
-| `/`                  | 홈                                           |
-| `/about`             | 서비스 소개                                  |
-| `/features`          | 주요 기능                                    |
-| `/stories`           | 이야기 목록, `?category=bag` 등 분류 링크    |
-| `/stories/:slug`     | 가구·가방·신발·의류·생활용품·가전 가이드 6개 |
-| `/faq`               | FAQ 검색 및 분류                             |
-| `/download`          | 앱 다운로드 안내                             |
-| `/terms`, `/privacy` | 시안의 정책 초안                             |
-
-`app/routes.ts`에서 경로를 정의하고 `react-router.config.ts`에서 14개 경로를 사전 렌더링합니다. 페이지 본문·메타 정보는 JS를 실행하지 않아도 생성된 HTML에 들어 있습니다. 경로별 코드 분할과 페이지 이동은 React Router가 담당합니다.
+| 주소                         | 내용                                         |
+| ---------------------------- | -------------------------------------------- |
+| `/`                          | 서비스와 분야별 가이드 소개                  |
+| `/about`, `/features`        | 서비스 가치와 앱의 주요 기능                 |
+| `/guides`                    | 수리·리폼 가이드 허브                        |
+| `/guides/:category`          | 분야별 질문·답변과 상담 준비, 관련 이야기    |
+| `/stories`, `/stories/:slug` | 이야기 목록과 상세 가이드 6개                |
+| `/faq`                       | 서비스 FAQ 검색·분류·답변                    |
+| `/download`                  | 앱 출시 안내                                 |
+| `/editorial-policy`          | 콘텐츠 작성 주체·범위·편집 원칙              |
+| `/terms`, `/privacy`         | 검토용 정책 초안. HTML에 noindex,follow 적용 |
 
 ```text
-app/
-  components/       # 헤더, 푸터, 앱 목업, 공통 CTA, 토스트 등
-  data/             # 페이지 메타 정보, FAQ, 이야기 데이터
-  lib/seo.ts        # 페이지별 SEO/OG/canonical
-  routes/           # React 페이지
-  root.tsx          # 공통 문서 및 레이아웃
-  styles.css        # 시안에서 옮긴 반응형 스타일
-public/             # 이미지, 파비콘, 404.html, Cloudflare 헤더
-scripts/            # robots/sitemap/기존 URL 리다이렉트 생성
-tests/              # UI 동작 및 SSG 산출물 검사
+site.config.ts          # 공식 주소·브랜드·운영 브랜치 및 설정 검증
+app/lib/paths.ts        # SSG·sitemap·검증 공통 경로 목록
+app/lib/seo.ts          # canonical·OG·robots·페이지별 JSON-LD
+app/data/guides.ts      # 분야별 검색 진입 콘텐츠
+app/data/stories.ts     # 이야기 본문
+app/data/story-details.ts # 핵심 답변·체크리스트·수정일·참고 자료
+app/data/image-sizes.json # 원본 이미지 실제 치수
+app/routes/            # React 페이지
+scripts/finalize-build.mjs # Cloudflare용 파일 배치·robots·sitemap·리다이렉트
+scripts/audit-live.mjs  # 재배포 후 공개 응답 점검
 ```
 
-이야기를 추가할 때는 `app/data/stories.ts`를 수정하면 상세 페이지와 사전 렌더링 목록, sitemap, 이전 형식 URL 리다이렉트에 함께 반영됩니다.
+이야기를 추가하면 `stories.ts`와 `story-details.ts`를 함께 작성하세요. 작성자·발행일·평점·수리 결과를 추정해서 채우지 마세요. `updatedAt`은 본문을 실제 수정할 때만 변경합니다. `lastmod`는 해당 콘텐츠의 수정일을 사용하며 빌드 시각으로 갱신하지 않습니다. 이미지를 교체할 때는 `image-sizes.json`에 실제 치수를 반영해야 합니다.
 
 ## Cloudflare Pages 배포
 
-Cloudflare 대시보드에서 **Workers & Pages → Create application → Pages → Git 저장소 연결** 후 다음 값을 설정하세요.
+| 설정              | 값                             |
+| ----------------- | ------------------------------ |
+| Framework preset  | None                           |
+| Root directory    | 저장소 루트                    |
+| Build command     | `npm run build`                |
+| Output directory  | `build/client`                 |
+| Node              | 24 (`.node-version` 제공)      |
+| Production branch | main (`site.config.ts`와 일치) |
 
-| 설정                           | 값                                 |
-| ------------------------------ | ---------------------------------- |
-| Framework preset               | None                               |
-| Root directory                 | 저장소 루트(비워 둠)               |
-| Build command                  | `npm run build`                    |
-| Build output directory         | `build/client`                     |
-| Node 버전                      | `24` (`.node-version` 제공)        |
-| 환경 변수(공식 도메인 확정 후) | `VITE_SITE_URL=https://공식도메인` |
+`VITE_SITE_URL`은 생략할 수 있습니다. 설정한다면 `https://www.dashiform.com`과 일치해야 하며, 잘못된 값은 빌드 오류가 됩니다. 도메인을 이전할 때는 `site.config.ts`와 Cloudflare 도메인·리다이렉트 설정을 함께 변경하세요.
 
-React Router의 Cloudflare SSR/Workers 템플릿을 선택할 필요가 없습니다. 이 프로젝트는 Pages에 HTML/CSS/JS/이미지만 배포합니다. 런타임 Functions나 Worker는 사용하지 않습니다.
+검토용 빌드는 `VITE_INDEXING=disabled`로 설정할 수 있습니다. Cloudflare 미리보기 브랜치는 이 값이 enabled여도 자동으로 검색 제외됩니다. 로컬 `.env` 예시는 `.env.example`에 있습니다. Search Console/Bing/Naver의 공개 소유권 확인 메타 토큰도 선택적으로 설정할 수 있습니다. DNS 인증을 사용한다면 토큰은 필요하지 않습니다.
 
-`wrangler.jsonc`의 `name`은 생성한 Pages 프로젝트 이름과 맞추세요. CLI로 배포하려면 계정에 로그인하고 프로젝트를 만든 후 실행합니다.
+계정 인증과 Pages 프로젝트가 준비된 환경에서는:
 
 ```bash
-npx wrangler login
-npx wrangler pages project create reform-web
 npm run deploy
 ```
 
-실제 계정 인증, 원격 Pages 프로젝트 생성, 도메인 연결은 로컬 구현에 포함되어 있지 않습니다. `npm run deploy`는 원격 배포를 수행합니다.
+**운영에 반영할 Cloudflare 도메인 리다이렉트와 AI 접근 정책은 [배포 안내](docs/seo-geo-deployment.md)를 함께 적용하세요.** 저장소 파일만으로 계정의 봇 차단 설정이나 호스트 리다이렉트를 변경할 수는 없습니다.
 
-### 경로와 404
+## 출시 및 콘텐츠 상태
 
-- 기존 `/about.html` 등 HTML 주소는 새 주소로 301 리다이렉트됩니다.
-- 기존 `/story-wooden-chair.html` 및 확장자 없는 이전 이야기 주소도 `/stories/wooden-chair`로 연결됩니다.
-- 최상위 `404.html`을 제공하여 존재하지 않는 URL은 HTTP 404로 응답합니다. 모든 경로를 `/index.html`로 보내는 SPA 리라이트는 사용하지 않습니다.
-- 앱 안에서 잘못된 링크로 이동한 경우에도 안내와 홈 복귀 링크를 표시합니다.
+모든 앱 다운로드 버튼은 “출시 예정입니다” 메시지를 표시합니다. `/download` 안내 페이지는 별도의 “앱 출시 안내” 링크로 발견할 수 있습니다. 앱스토어 주소·QR 코드·정책 문서·제품 이미지는 실제 출시 정보에 맞춰 갱신해야 합니다.
 
-### 공식 도메인과 SEO
-
-로컬에서는 `.env.example`을 `.env`로 복사하고, Cloudflare에서는 빌드 환경 변수에 동일한 값을 설정합니다.
-
-```dotenv
-VITE_SITE_URL=https://reform.example.com
-```
-
-값에는 도메인 원점만 넣습니다(경로, 쿼리, 해시 제외). 설정하면 페이지별 canonical, 절대 OG URL, `sitemap.xml`, robots의 Sitemap 주소를 생성합니다. 도메인을 설정하지 않으면 임의의 운영 주소를 만들지 않고 canonical과 sitemap을 생략합니다. 환경 변수를 바꾼 후에는 다시 빌드해야 합니다.
-
-## 시안에서 유지한 출시 준비 항목
-
-모든 페이지의 다운로드 버튼(헤더·푸터·모바일 메뉴·본문 CTA·스토어 버튼)은 `app/components/DownloadButton.tsx`를 통해 “출시 예정입니다” 메시지를 표시합니다. QR 코드는 안내 자리 표시자입니다. 실제 링크 확정 시 공통 다운로드 버튼과 `app/components/StoreButtons.tsx`, 다운로드 페이지의 안내를 업데이트하세요. 정책 초안, 목업 이미지, 서비스 기능 설명과 예시 콘텐츠도 원본 내용을 유지했습니다.
-
-공식 참고: [React Router 사전 렌더링](https://reactrouter.com/how-to/pre-rendering), [Cloudflare 정적 HTML 배포](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/), [Cloudflare 경로 및 404 동작](https://developers.cloudflare.com/pages/configuration/serving-pages/).
+현재 이야기와 가이드는 일반적인 상담 준비 정보입니다. 실제 업체 사례나 전문 검수 자료가 준비되면 근거·확인 날짜와 함께 콘텐츠를 강화하세요. 기존 목업 이미지에는 작은 원본이 포함되어 있으므로 운영용 사진을 확보하면 고해상도 WebP와 실제 치수로 교체하세요.

@@ -36,7 +36,7 @@ export const stories = [
     title: "오래된 가구, 리폼으로 새롭게",
     description:
       "낡은 의자를 새로운 분위기로 바꾸는 방법과 알아두면 좋은 점을 소개합니다.",
-    image: "/images/story-chair.webp",
+    image: "/images/furniture-20261020.webp",
     seoDescription:
       "낡은 의자를 새로운 분위기로 바꾸는 방법과 알아두면 좋은 점을 소개합니다.",
     blocks: [
@@ -80,7 +80,7 @@ export const stories = [
     label: "가방/가죽",
     title: "가죽 가방 수선이 필요한 순간",
     description: "오랫동안 사용한 가죽 가방을 관리하고 수선할 때 알아둘 사항.",
-    image: "/images/story-bag.webp",
+    image: "/images/bag-20261020.webp",
     seoDescription:
       "오랫동안 사용한 가죽 가방을 관리하고 수선할 때 알아둘 사항.",
     blocks: [
@@ -124,7 +124,7 @@ export const stories = [
     label: "신발",
     title: "운동화 복원, 어떻게 해볼까요?",
     description: "좋아하는 운동화를 더 오래 신기 위한 세척과 복원 정보.",
-    image: "/images/story-shoes.webp",
+    image: "/images/shoes-20261020.webp",
     seoDescription: "좋아하는 운동화를 더 오래 신기 위한 세척과 복원 정보.",
     blocks: [
       {
@@ -167,7 +167,7 @@ export const stories = [
     label: "의류",
     title: "청바지 수선, 이렇게 달라져요",
     description: "작은 수선으로 옷의 핏과 착용감을 바꾸는 아이디어.",
-    image: "/images/story-workshop.webp",
+    image: "/images/clothing-20261020.webp",
     seoDescription: "작은 수선으로 옷의 핏과 착용감을 바꾸는 아이디어.",
     blocks: [
       {
@@ -210,7 +210,7 @@ export const stories = [
     label: "생활용품",
     title: "조명과 가구로 분위기 바꾸기",
     description: "이미 있는 물건을 활용해 공간을 새롭게 만드는 리폼 아이디어.",
-    image: "/images/story-table.webp",
+    image: "/images/living-20261020.webp",
     seoDescription:
       "이미 있는 물건을 활용해 공간을 새롭게 만드는 리폼 아이디어.",
     blocks: [
@@ -254,7 +254,7 @@ export const stories = [
     label: "가전제품",
     title: "가전제품 수리 전 체크리스트",
     description: "소형 가전제품의 수리 가능성을 확인하기 전에 준비할 것.",
-    image: "/images/story-machine.webp",
+    image: "/images/appliance-20261020.webp",
     seoDescription: "소형 가전제품의 수리 가능성을 확인하기 전에 준비할 것.",
     blocks: [
       {

@@ -1,3 +1,4 @@
+import { Image } from "./Image";
 type Props = { variant?: "map" | "detail"; className?: string };
 export function PhoneMockup({ variant = "map", className = "" }: Props) {
   return (
@@ -22,9 +23,10 @@ export function PhoneMockup({ variant = "map", className = "" }: Props) {
             </div>
             <div className="mock-list">
               <div className="mock-list-item">
-                <img
-                  src="/images/category-furniture.webp"
+                <Image
+                  src="/images/furniture-20261020.webp"
                   alt=""
+                  sizes="220px"
                   loading="lazy"
                 />
                 <div>
@@ -33,7 +35,12 @@ export function PhoneMockup({ variant = "map", className = "" }: Props) {
                 </div>
               </div>
               <div className="mock-list-item">
-                <img src="/images/category-bag.webp" alt="" loading="lazy" />
+                <Image
+                  src="/images/bag-20261020.webp"
+                  alt=""
+                  sizes="220px"
+                  loading="lazy"
+                />
                 <div>
                   <strong>가방·가죽 관리</strong>
                   <small>수선 정보 확인하기</small>
@@ -52,9 +59,10 @@ export function PhoneMockup({ variant = "map", className = "" }: Props) {
           <div className="notch"></div>
           <div className="screen">
             <div className="screen-logo">re:form</div>
-            <img
-              src="/images/story-bag.webp"
+            <Image
+              src="/images/bag-20261020.webp"
               alt="가죽 가방 이미지"
+              sizes="220px"
               loading="lazy"
               className="mock-detail-image"
             />

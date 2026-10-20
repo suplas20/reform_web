@@ -7,6 +7,12 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [main, seo-preview]
+    env:
+      CF_PAGES: "1"
+      CF_PAGES_BRANCH: ${{ matrix.branch }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

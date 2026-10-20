@@ -1,3 +1,4 @@
+import { Image } from "../components/Image";
 import { Link } from "react-router";
 import { createPageMeta } from "../lib/seo";
 import { pages } from "../data/pages";
@@ -13,14 +14,14 @@ export default function Page() {
           <div className="hero-copy">
             <div className="hero-kicker">Repair, Reuse, Re:form.</div>
             <h1>
-              버리지 말고,
+              수리·리폼의 시작,
               <br />
-              다시 좋은 모습으로.
+              re:form과 함께.
             </h1>
             <p className="lead">
-              우리 주변의 수리·리폼 전문 업체를 쉽게 찾고,
+              가구 리폼부터 가방·신발·의류 수선까지,
               <br />
-              물건의 쓰임을 다시 발견하는 새로운 방법.
+              주변 업체 탐색을 돕는 re:form을 만나보세요.
             </p>
             <StoreButtons />
             <span className="hero-footnote">
@@ -30,7 +31,7 @@ export default function Page() {
           <div
             className="hero-media"
             role="img"
-            aria-label="따뜻한 거실 가구와 re:form 앱 화면 목업"
+            aria-label="햇살이 드는 거실의 나무 의자와 테이블"
           >
             <div className="home-float">오래 쓰는 일상, re:form에서</div>
           </div>
@@ -179,53 +180,63 @@ export default function Page() {
             </Link>
           </div>
           <div className="category-grid">
-            <Link className="category-card" to="/stories?category=furniture">
-              <img
-                src="/images/category-furniture.webp"
+            <Link className="category-card" to="/guides/furniture">
+              <Image
+                src="/images/furniture-20261020.webp"
                 alt="가구"
+                sizes="(max-width: 760px) 30vw, 160px"
                 loading="lazy"
               />
               <strong>가구</strong>
               <span>의자·소파·테이블</span>
             </Link>
-            <Link className="category-card" to="/stories?category=bag">
-              <img
-                src="/images/category-bag.webp"
+            <Link className="category-card" to="/guides/bag">
+              <Image
+                src="/images/bag-20261020.webp"
                 alt="가방/가죽"
+                sizes="(max-width: 760px) 30vw, 160px"
                 loading="lazy"
               />
               <strong>가방/가죽</strong>
               <span>가방·지갑·가죽</span>
             </Link>
-            <Link className="category-card" to="/stories?category=shoes">
-              <img
-                src="/images/category-sneakers.webp"
+            <Link className="category-card" to="/guides/shoes">
+              <Image
+                src="/images/shoes-20261020.webp"
                 alt="신발"
+                sizes="(max-width: 760px) 30vw, 160px"
                 loading="lazy"
               />
               <strong>신발</strong>
               <span>운동화·구두</span>
             </Link>
-            <Link className="category-card" to="/stories?category=clothing">
-              <img
-                src="/images/category-clothing.webp"
+            <Link className="category-card" to="/guides/clothing">
+              <Image
+                src="/images/clothing-20261020.webp"
                 alt="의류"
+                sizes="(max-width: 760px) 30vw, 160px"
                 loading="lazy"
               />
               <strong>의류</strong>
               <span>수선·리폼</span>
             </Link>
-            <Link className="category-card" to="/stories?category=appliance">
-              <img
-                src="/images/category-appliance.webp"
+            <Link className="category-card" to="/guides/appliance">
+              <Image
+                src="/images/appliance-20261020.webp"
                 alt="가전제품"
+                sizes="(max-width: 760px) 30vw, 160px"
                 loading="lazy"
               />
               <strong>가전제품</strong>
               <span>소형 가전·수리</span>
             </Link>
-            <Link className="category-card" to="/stories?category=living">
-              <img src="/images/category-wood.webp" alt="기타" loading="lazy" />
+            <Link className="category-card" to="/guides/living">
+              <Image
+                src="/images/living-20261020.webp"
+                alt="기타"
+                sizes="(max-width: 760px) 30vw, 160px"
+                loading="lazy"
+              />
               <strong>기타</strong>
               <span>생활용품</span>
             </Link>

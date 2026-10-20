@@ -6,7 +6,7 @@ import { DownloadButton } from "./DownloadButton";
 const navigation = [
   { to: "/about", label: "서비스 소개" },
   { to: "/features", label: "주요 기능" },
-  { to: "/stories", label: "리폼 이야기" },
+  { to: "/guides", label: "수리 가이드" },
   { to: "/faq", label: "FAQ" },
 ];
 

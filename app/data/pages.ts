@@ -1,13 +1,13 @@
 export const pages = {
   home: {
     path: "/",
-    title: "고쳐 쓰는 선택이 만드는 더 좋은 일상 | re:form",
+    title: "수리·리폼 업체 찾기와 물건 관리 가이드 | re:form",
     description:
-      "주변의 수리·리폼 업체를 더 쉽게 발견하세요. 버리지 말고 다시 좋은 모습으로, re:form 앱 소개.",
+      "가구 리폼, 가방·신발·의류 수선과 가전 수리 전 필요한 정보를 만나보세요. 주변 업체 탐색을 돕는 re:form 앱 소개와 분야별 상담 가이드를 제공합니다.",
   },
   about: {
     path: "/about",
-    title: "서비스 소개 | re:form",
+    title: "수리·리폼을 더 가깝게, 서비스 소개 | re:form",
     description:
       "re:form이 추구하는 가치와 일상 속 수리·리폼의 가능성을 소개합니다.",
   },
@@ -19,7 +19,7 @@ export const pages = {
   },
   stories: {
     path: "/stories",
-    title: "리폼 이야기 | re:form",
+    title: "수리·리폼 이야기와 물건 관리 정보 | re:form",
     description:
       "가구 리폼, 가방 수선, 운동화 복원, 가전 수리 등 일상의 물건을 오래 쓰는 정보 가이드.",
   },
@@ -31,7 +31,7 @@ export const pages = {
   },
   features: {
     path: "/features",
-    title: "주요 기능 | re:form",
+    title: "주변 수리 업체 탐색·정보 비교·즐겨찾기 | re:form",
     description:
       "주변 업체 찾기, 카테고리 탐색, 업체 정보와 리뷰 확인, 즐겨찾기 등 re:form의 주요 기능.",
   },
@@ -46,5 +46,17 @@ export const pages = {
     title: "개인정보처리방침 | re:form",
     description:
       "re:form 개인정보처리방침 검토용 초안. 실제 개인정보 수집·이용 현황에 따라 확정해야 합니다.",
+  },
+  guides: {
+    path: "/guides",
+    title: "가구·가방·신발·의류·가전 수리 가이드 | re:form",
+    description:
+      "수리·리폼이 처음이라면 분야별 상담 준비부터 시작하세요. 가구, 가방·가죽, 신발, 의류, 가전제품, 생활용품의 상태 확인과 견적 체크리스트를 제공합니다.",
+  },
+  editorial: {
+    path: "/editorial-policy",
+    title: "콘텐츠 작성·수정 및 편집 원칙 | re:form",
+    description:
+      "re:form 수리·리폼 정보의 작성 주체와 범위, 자료 확인 방법, 업데이트 기준을 설명합니다. 실제 업체 사례와 일반 정보 가이드를 구분합니다.",
   },
 } as const;

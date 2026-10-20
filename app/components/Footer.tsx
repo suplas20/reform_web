@@ -22,7 +22,8 @@ export function Footer() {
             <strong>둘러보기</strong>
             <Link to="/about">서비스 소개</Link>
             <Link to="/features">주요 기능</Link>
-            <Link to="/stories">리폼 이야기</Link>
+            <Link to="/guides">분야별 수리 가이드</Link>
+            <Link to="/download">앱 출시 안내</Link>
             <DownloadButton className="footer-download">
               앱 다운로드
             </DownloadButton>
@@ -30,6 +31,7 @@ export function Footer() {
           <div className="footer-col">
             <strong>도움말 및 정책</strong>
             <Link to="/faq">자주 묻는 질문</Link>
+            <Link to="/editorial-policy">콘텐츠 편집 원칙</Link>
             <Link to="/terms">이용약관</Link>
             <Link to="/privacy">개인정보처리방침</Link>
             <span className="footer-note">

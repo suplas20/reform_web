@@ -11,19 +11,13 @@ import {
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { ToastProvider } from "./components/Toast";
-import { siteUrl } from "./lib/seo";
+import { getIdentitySchema } from "./lib/seo";
+import { Breadcrumbs } from "./components/Breadcrumbs";
 import { ErrorContent } from "./routes/not-found";
 import "./styles.css";
 
 export function Layout({ children }: { children: ReactNode }) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "re:form",
-    inLanguage: "ko-KR",
-    description: "수리·리폼 전문 업체 탐색을 돕는 re:form 앱 소개 웹사이트",
-    ...(siteUrl ? { url: siteUrl } : {}),
-  };
+  const schema = getIdentitySchema();
   return (
     <html lang="ko">
       <head>
@@ -31,6 +25,24 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="color-scheme" content="light" />
         <meta name="theme-color" content="#075647" />
+        {import.meta.env.VITE_GOOGLE_SITE_VERIFICATION && (
+          <meta
+            name="google-site-verification"
+            content={import.meta.env.VITE_GOOGLE_SITE_VERIFICATION}
+          />
+        )}
+        {import.meta.env.VITE_BING_SITE_VERIFICATION && (
+          <meta
+            name="msvalidate.01"
+            content={import.meta.env.VITE_BING_SITE_VERIFICATION}
+          />
+        )}
+        {import.meta.env.VITE_NAVER_SITE_VERIFICATION && (
+          <meta
+            name="naver-site-verification"
+            content={import.meta.env.VITE_NAVER_SITE_VERIFICATION}
+          />
+        )}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <Meta />
         <Links />
@@ -58,6 +70,7 @@ function SiteLayout({ children }: { children: ReactNode }) {
       </a>
       <Header />
       <main id="main" tabIndex={-1}>
+        <Breadcrumbs />
         {children}
       </main>
       <Footer />

@@ -1,3 +1,4 @@
+import { Image } from "../components/Image";
 import { Link } from "react-router";
 import { createPageMeta } from "../lib/seo";
 import { pages } from "../data/pages";
@@ -133,9 +134,9 @@ export default function Page() {
           </div>
           <div className="image-triptych">
             <article>
-              <img
-                src="/images/story-workshop.webp"
-                alt="정성스럽게 물건을 수선하는 손"
+              <Image
+                src="/images/clothing-20261020.webp"
+                alt="청바지와 실, 가위가 놓인 수선 작업대"
                 loading="lazy"
               />
               <div className="trip-content">
@@ -144,8 +145,8 @@ export default function Page() {
               </div>
             </article>
             <article>
-              <img
-                src="/images/chair-lifestyle.webp"
+              <Image
+                src="/images/furniture-20261020.webp"
                 alt="햇살 아래 나무 의자"
                 loading="lazy"
               />
@@ -155,8 +156,8 @@ export default function Page() {
               </div>
             </article>
             <article>
-              <img
-                src="/images/living-desk.webp"
+              <Image
+                src="/images/living-20261020.webp"
                 alt="식물이 놓인 따뜻한 실내"
                 loading="lazy"
               />

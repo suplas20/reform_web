@@ -1,18 +1,26 @@
+import { Image } from "../components/Image";
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { stories, storyCategories } from "../data/stories";
 import { pages } from "../data/pages";
 import { createPageMeta } from "../lib/seo";
 import { ArrowIcon } from "../components/Icons";
 import { DownloadButton } from "../components/DownloadButton";
+import { GuideLinks } from "../components/GuideLinks";
 
 export const meta = () => createPageMeta(pages.stories);
 
 export default function StoriesPage() {
   const [params, setParams] = useSearchParams();
+  // The static document contains all stories. Match it on the first hydration
+  // render, then apply bookmarked filters without discarding the SSG markup.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const requested = params.get("category");
-  const category = storyCategories.some((item) => item.id === requested)
-    ? requested
-    : "all";
+  const category =
+    hydrated && storyCategories.some((item) => item.id === requested)
+      ? requested
+      : "all";
   const visibleStories = stories.filter(
     (story) => category === "all" || story.category === category,
   );
@@ -67,7 +75,7 @@ export default function StoriesPage() {
                   className="story-card-photo"
                   to={`/stories/${story.slug}`}
                 >
-                  <img src={story.image} alt={story.title} loading="lazy" />
+                  <Image src={story.image} alt={story.title} loading="lazy" />
                 </Link>
                 <span className="tag">{story.label}</span>
                 <h3>
@@ -78,6 +86,12 @@ export default function StoriesPage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+      <section className="section-sm">
+        <div className="container">
+          <h2>물건별 상담 준비 가이드</h2>
+          <GuideLinks />
         </div>
       </section>
       <section className="section-sm section-cream">

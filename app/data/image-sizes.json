@@ -1,0 +1,37 @@
+{
+  "/images/hero-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/hero-20261020-480.webp 480w, /images/hero-20261020-960.webp 960w, /images/hero-20261020.webp 1536w"
+  },
+  "/images/furniture-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/furniture-20261020-480.webp 480w, /images/furniture-20261020-960.webp 960w, /images/furniture-20261020.webp 1536w"
+  },
+  "/images/bag-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/bag-20261020-480.webp 480w, /images/bag-20261020-960.webp 960w, /images/bag-20261020.webp 1536w"
+  },
+  "/images/shoes-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/shoes-20261020-480.webp 480w, /images/shoes-20261020-960.webp 960w, /images/shoes-20261020.webp 1536w"
+  },
+  "/images/clothing-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/clothing-20261020-480.webp 480w, /images/clothing-20261020-960.webp 960w, /images/clothing-20261020.webp 1536w"
+  },
+  "/images/appliance-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/appliance-20261020-480.webp 480w, /images/appliance-20261020-960.webp 960w, /images/appliance-20261020.webp 1536w"
+  },
+  "/images/living-20261020.webp": {
+    "width": 1536,
+    "height": 1024,
+    "srcSet": "/images/living-20261020-480.webp 480w, /images/living-20261020-960.webp 960w, /images/living-20261020.webp 1536w"
+  }
+}
